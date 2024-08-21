@@ -21,6 +21,8 @@ const Login = () => {
             .catch(error => console.log(error));
     }
 
+    // google login
+
     const handleGoogleLogin = () => {
 
     }
