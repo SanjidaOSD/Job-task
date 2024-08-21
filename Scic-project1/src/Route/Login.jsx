@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useContext } from "react";
 import { AuthContext } from "../Providers/AuthProvider";
 
 
 const Login = () => {
-    const { signIn } = useContext(AuthContext);
-
+    const { user, signIn, googleLogin } = useContext(AuthContext);
+    const navigate = useNavigate()
     const handleLogin = event => {
         event.preventDefault();
         const form = event.target;
@@ -17,14 +17,22 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user)
+           
             })
             .catch(error => console.log(error));
     }
 
     // google login
 
-    const handleGoogleLogin = () => {
-
+    const handleGoogleLogin = async() => {
+        try {
+            const data = await googleLogin()
+            if(data.user.accessToken){
+                navigate('/')
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
     }
     return (
         <div>
@@ -58,7 +66,7 @@ const Login = () => {
 
                         </form>
 
-                        <p className="my-4 text-center">Don't have an accout?<Link className="text-pink-600 font-bold" to='/signup'>Sign up</Link></p>
+                        <p className="my-4 text-center">Don&apos;t have an accout?<Link className="text-pink-600 font-bold" to='/signup'>Sign up</Link></p>
                     </div>
                 </div>
             </div>

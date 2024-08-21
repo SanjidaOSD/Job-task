@@ -119,8 +119,13 @@ const Products = () => {
                                 </div>
                                 <h1 className="mt-3 text-xl font-semibold">{product.productName}</h1>
                                 <p className="font-medium mt-2 mb-5">{product.description}</p>
-                                <div>
-                                    <button className="px-8 py-2 bg-blue-400 text-white rounded-md">Buy Now</button>
+                                <div className="flex justify-between items-center">
+                                    <div>
+                                        <p className="font-bold text-lg">Price : ${product.price}</p>
+                                    </div>
+                                    <div>
+                                        <button className="px-8 py-2 bg-blue-400 text-white rounded-md">Buy Now</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
