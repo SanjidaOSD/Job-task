@@ -39,15 +39,19 @@ async function run() {
         await client.connect();
 
 
-        app.get('/', async(req, res) =>{
+        app.get('/', async (req, res) => {
             res.send("Shajgoj Server Is Running....")
         })
 
-        app.get('/products', async(req, res)=>{
-            const result = await productsCollection.find().toArray();
+        app.get('/products', async (req, res) => {
+            const search = req.query.search || "";
+            let query = {
+                productName: { $regex: search, $options: 'i' }
+            }
+            const product = productsCollection.find(query);
+            const result = await product.toArray();
             res.send(result)
         })
-
 
 
 
@@ -68,4 +72,4 @@ run().catch(console.dir);
 
 app.listen(port, () => {
     console.log("Shajgoj Server Is Running On Port : ", port);
-  })
+})

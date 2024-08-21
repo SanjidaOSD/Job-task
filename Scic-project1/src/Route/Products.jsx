@@ -2,6 +2,7 @@ import axios from "axios";
 import { FaStar } from "react-icons/fa6";
 import { useForm } from "react-hook-form"
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 const Products = () => {
 
@@ -11,32 +12,32 @@ const Products = () => {
         formState: { errors },
     } = useForm()
 
+    const [search, setSearch] = useState('')
 
     const { data: products = [], isLoading } = useQuery({
-        queryKey: ["products"],
-        queryFn: async () => {
-            const { data } = await axios.get('http://localhost:5000/products')
-            return data;
-        }
+        queryFn: () => getProducts(),
+        queryKey: ['products', search]
     })
 
-
-
-
-    if (products.length < 1) {
-        return <div>
-            <h1>Loading...</h1>
-        </div>
+    const getProducts = async () => {
+        const { data } = await axios.get(`http://localhost:5000/products?search=${search}`)
+        return data;
     }
 
     const handleSearch = (data) => {
-        console.log("Searched", data);
+        console.log("Searched", data.search);
+        setSearch(data.search)
     }
 
     const handleSort = () => {
         console.log("Sort");
     }
 
+    if (products.length < 1) {
+        return <div>
+            <h1>Loading...</h1>
+        </div>
+    }
     return (
         <div>
             <div>
