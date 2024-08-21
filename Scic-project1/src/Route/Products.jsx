@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa6";
 import { useForm } from "react-hook-form"
+import { useQuery } from "@tanstack/react-query";
 
 const Products = () => {
-
-    const [products, setProducts] = useState([])
-    const [loading, setLoading] = useState(true)
 
     const {
         register,
@@ -15,20 +12,16 @@ const Products = () => {
     } = useForm()
 
 
-    const loadProducts = async () => {
-        try {
+    const { data: products = [], isLoading } = useQuery({
+        queryKey: ["products"],
+        queryFn: async () => {
             const { data } = await axios.get('http://localhost:5000/products')
-            setProducts(data);
+            return data;
         }
-        catch (err) {
-            console.log(err);
-        }
-    }
+    })
 
-    useEffect(() => {
-        loadProducts()
-        setLoading(false)
-    }, [loading])
+
+
 
     if (products.length < 1) {
         return <div>
@@ -95,7 +88,7 @@ const Products = () => {
             {/* Product card container */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                    !loading && products.map(product => {
+                    !isLoading && products.map(product => {
                         return <div className="border border-gray-200 rounded-xl" key={product._id}>
                             <div>
                                 <img className="w-full rounded-t-xl h-[250px] object-cover" src={product.productImage} alt="Product Image" />
