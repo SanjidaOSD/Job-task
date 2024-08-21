@@ -11,7 +11,6 @@ const Products = () => {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm()
 
@@ -41,35 +40,37 @@ const Products = () => {
         console.log("Searched", data);
     }
 
+    const handleSort = () => {
+        console.log("Sort");
+    }
+
     return (
         <div>
             <div>
-                <h1>Products</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis magni adipisci ut. Minus soluta unde incidunt, itaque a cupiditate, ab aperiam totam recusandae reprehenderit pariatur molestiae rem, consequuntur nemo nisi.</p>
+                <h1 className="text-2xl font-bold text-center mb-10">Find Your Best Product Here</h1>
             </div>
 
             <div>
                 <div>
                     <form onSubmit={handleSubmit(handleSearch)}>
 
-                        <div>
-                            <select {...register("brandName")} className="py-2 px-8 mx-2 bg-blue-50">
+                        <div className="w-[50%] mx-auto flex justify-center gap-5 mb-5">
+                            <select {...register("brandName")} className="py-2 px-8 block w-full bg-blue-50">
                                 <option value="">Brand</option>
                                 <option value="square">Square</option>
                                 <option value="unilever">Unilever</option>
-                                <option value="">other</option>
                             </select>
-                            <select {...register("category")} className="py-2 px-8 mx-2 bg-blue-50">
+                            <select {...register("category")} className="py-2 px-8 block w-full bg-blue-50">
                                 <option value="">Category</option>
                                 <option value="t-shirt">T-Shirt</option>
                                 <option value="shoe">Shoe</option>
                                 <option value="pant">Pant</option>
                             </select>
-                            <select {...register("priceRange")} className="py-2 px-8 mx-2 bg-blue-50">
+                            <select {...register("priceRange")} className="py-2 px-8 block w-full bg-blue-50">
                                 <option value="">Price Range</option>
-                                <option value="t-shirt">1-1000</option>
-                                <option value="shoe">1000-10000</option>
-                                <option value="pant">10000-100000</option>
+                                <option value="level1">1-1000</option>
+                                <option value="level2">1000-10000</option>
+                                <option value="level3">10000-100000</option>
                             </select>
                         </div>
 
@@ -77,9 +78,17 @@ const Products = () => {
                         <input className="py-2 px-8 bg-blue-50 w-[50%] mx-auto block" type="text" name="search" placeholder="Search Here" {...register("search")} />
                         {errors.search && <span>This field is required</span>}
 
-
-                        <input type="submit" />
+                        <div className="w-full flex justify-center my-8">
+                            <input className="px-8 py-[5px] bg-blue-400 rounded-md cursor-pointer text-white hover:bg-blue-600 duration-200" type="submit" value={"Search"} />
+                        </div>
                     </form>
+                </div>
+                <div className="mb-8 flex gap-3 items-center justify-end">
+                    <p>Sort By : </p>
+                    <select className="py-2 px-8 block bg-blue-50" onChange={() => handleSort()}>
+                        <option value="price">Price</option>
+                        <option value="date">Date</option>
+                    </select>
                 </div>
             </div>
 
