@@ -2,7 +2,7 @@ import axios from "axios";
 import { FaStar } from "react-icons/fa6";
 import { useForm } from "react-hook-form"
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Products = () => {
 
@@ -19,25 +19,40 @@ const Products = () => {
         queryKey: ['products', search]
     })
 
+    const [sortedProducts, setSortedProducts] = useState([]);
+
+    useEffect(() => {
+        setSortedProducts([...products]);
+    }, [products]);
+
     const getProducts = async () => {
         const { data } = await axios.get(`http://localhost:5000/products?search=${search}`)
         return data;
     }
 
     const handleSearch = (data) => {
-        console.log("Searched", data.search);
-        setSearch(data.search)
+        setSearch(data.search);
     }
 
-    const handleSort = () => {
-        console.log("Sort");
+    const handleSort = (event) => {
+        const sortBy = event.target.value;
+        let sortedArray = [...products];
+
+        if (sortBy === "price") {
+            sortedArray.sort((a, b) => a.price - b.price);
+        } else if (sortBy === "date") {
+            sortedArray.sort((a, b) => new Date(b.creationDateTime) - new Date(a.creationDateTime));
+        }
+
+        setSortedProducts(sortedArray);
     }
 
-    if (products.length < 1) {
+    if (isLoading) {
         return <div>
             <h1>Loading...</h1>
         </div>
     }
+
     return (
         <div>
             <div>
@@ -68,7 +83,6 @@ const Products = () => {
                             </select>
                         </div>
 
-                        {/* register your input into the hook by invoking the "register" function */}
                         <input className="py-2 px-8 bg-blue-50 w-[50%] mx-auto block" type="text" name="search" placeholder="Search Here" {...register("search")} />
                         {errors.search && <span>This field is required</span>}
 
@@ -79,7 +93,7 @@ const Products = () => {
                 </div>
                 <div className="mb-8 flex gap-3 items-center justify-end">
                     <p>Sort By : </p>
-                    <select className="py-2 px-8 block bg-blue-50" onChange={() => handleSort()}>
+                    <select className="py-2 px-8 block bg-blue-50" onChange={handleSort}>
                         <option value="price">Price</option>
                         <option value="date">Date</option>
                     </select>
@@ -87,9 +101,9 @@ const Products = () => {
             </div>
 
             {/* Product card container */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
                 {
-                    !isLoading && products.map(product => {
+                    sortedProducts.map(product => {
                         return <div className="border border-gray-200 rounded-xl" key={product._id}>
                             <div>
                                 <img className="w-full rounded-t-xl h-[250px] object-cover" src={product.productImage} alt="Product Image" />
