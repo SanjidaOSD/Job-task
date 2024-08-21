@@ -49,7 +49,7 @@ const {createUser} = useContext(AuthContext);
                             </label>
                         </div>
                         <div className="form-control mt-6">
-                            <input className="btn bg-pink-600 text-white" type="submit" value="login" />
+                            <input className="btn bg-pink-600 text-white" type="submit" value="SignUp" />
                         </div>
                     </form>
                     <p className="my-4 text-center">Allready have an accout?<Link className="text-pink-600 font-bold" to='/login'>Login</Link></p>
