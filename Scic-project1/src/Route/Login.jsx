@@ -5,20 +5,24 @@ import { AuthContext } from "../Providers/AuthProvider";
 
 
 const Login = () => {
-    const {signIn} = useContext(AuthContext);
+    const { signIn } = useContext(AuthContext);
 
-    const handleLogin = event =>{
+    const handleLogin = event => {
         event.preventDefault();
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log( email, password);
+        console.log(email, password);
         signIn(email, password)
-        .then(result =>{
-            const user = result.user;
-            console.log(user)
-        })
-        .catch(error => console.log(error));
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch(error => console.log(error));
+    }
+
+    const handleGoogleLogin = ()=>{
+
     }
     return (
         <div>
@@ -45,9 +49,10 @@ const Login = () => {
                             <div className="form-control mt-6">
                                 <input className="btn bg-pink-600 text-white" type="submit" value="login" />
                             </div>
-                            <FcGoogle className="text-3xl"></FcGoogle>
+                            <button  onClick={handleGoogleLogin}><FcGoogle className="text-3xl"></FcGoogle>
+                            </button>
                         </form>
-                        
+
                         <p className="my-4 text-center">Don't have an accout?<Link className="text-pink-600 font-bold" to='/signup'>Sign up</Link></p>
                     </div>
                 </div>
