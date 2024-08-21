@@ -21,7 +21,7 @@ const Login = () => {
             .catch(error => console.log(error));
     }
 
-    const handleGoogleLogin = ()=>{
+    const handleGoogleLogin = () => {
 
     }
     return (
@@ -49,8 +49,11 @@ const Login = () => {
                             <div className="form-control mt-6">
                                 <input className="btn bg-pink-600 text-white" type="submit" value="login" />
                             </div>
-                            <button  onClick={handleGoogleLogin}><FcGoogle className="text-3xl"></FcGoogle>
+
+                            {/* Google login */}
+                            <button onClick={handleGoogleLogin}><FcGoogle className="text-3xl"></FcGoogle>
                             </button>
+
                         </form>
 
                         <p className="my-4 text-center">Don't have an accout?<Link className="text-pink-600 font-bold" to='/signup'>Sign up</Link></p>
